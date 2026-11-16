@@ -3,8 +3,8 @@
 Home-cooked meals for university students. A React frontend for CS4032 Assignment 02.
 All orders, payments and cancellations are **simulated**; there is no backend.
 
-**Student:** TODO (name, roll number, section)
-**GitHub:** TODO | **Deployment:** TODO | **Final commit:** TODO
+**Student:** 24i-2137
+**GitHub:**  | **Deployment:**  | **Final commit:** 
 
 ## Commands
 
