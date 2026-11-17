@@ -1,50 +1,29 @@
-// Milestone 1 placeholder: proves the project runs and the async mock loader works
-// (loading, error and retry). Routing, pages and styling arrive in the next milestone.
+import { Route, Routes } from "react-router-dom";
+import Layout from "./components/Layout.jsx";
+import { MealsProvider } from "./context/MealsContext.jsx";
+import { PreferencesProvider } from "./context/PreferencesContext.jsx";
+import { FiltersProvider } from "./context/FiltersContext.jsx";
+import Home from "./pages/Home.jsx";
+import Browse from "./pages/Browse.jsx";
+import MealDetails from "./pages/MealDetails.jsx";
+import NotFound from "./pages/NotFound.jsx";
 
-import { useEffect, useState } from "react";
-import { loadMeals } from "./data/mockApi.js";
-
+// Shared state wraps the routes, so it survives moving between pages.
 export default function App() {
-  const [status, setStatus] = useState("loading"); // "loading" | "error" | "ready"
-  const [meals, setMeals] = useState([]);
-  const [error, setError] = useState("");
-  const [attempt, setAttempt] = useState(0);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    setStatus("loading");
-
-    loadMeals({ signal: controller.signal })
-      .then((data) => {
-        setMeals(data);
-        setStatus("ready");
-      })
-      .catch((err) => {
-        if (err.name === "AbortError") return; // effect cleaned up; ignore
-        setError(err.message);
-        setStatus("error");
-      });
-
-    return () => controller.abort();
-  }, [attempt]);
-
   return (
-    <main className="shell">
-      <h1>HomePlate</h1>
-      <p>Home-cooked meals for university students. Setup check (milestone 1).</p>
-
-      {status === "loading" && <p role="status">Loading meals…</p>}
-
-      {status === "error" && (
-        <div role="alert">
-          <p>{error}</p>
-          <button type="button" onClick={() => setAttempt((n) => n + 1)}>
-            Retry
-          </button>
-        </div>
-      )}
-
-      {status === "ready" && <p role="status">{meals.length} meals loaded.</p>}
-    </main>
+    <MealsProvider>
+      <PreferencesProvider>
+        <FiltersProvider>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="meals" element={<Browse />} />
+              <Route path="meals/:id" element={<MealDetails />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </FiltersProvider>
+      </PreferencesProvider>
+    </MealsProvider>
   );
 }

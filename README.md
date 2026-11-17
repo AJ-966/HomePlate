@@ -32,6 +32,20 @@ tests/          Node test runner tests for the business rule
 
 ## Status
 
-Milestone 1 (setup and business data) is complete. Routes, components, rules, tests and
-deployment notes will be added as the project progresses. This README will be completed
-before submission (routes, features, edge-case reproduction, limitations, concept map).
+Milestone 2 (routes, layout, home, browse with search/cuisine/price/sort filters, meal cards,
+meal details, loading/error/empty/not-found states) is complete. Ordering, rules, tests and
+deployment notes come in later milestones. This README will be completed before submission.
+
+## Routes
+
+| Path | Page |
+|---|---|
+| `/` | Home |
+| `/meals` | Browse and filter meals |
+| `/meals/:id` | Meal details (unknown ids show a helpful not-found state) |
+| `*` | Not found |
+
+## Design
+
+Fonts: Caprasimo (headings) and Bricolage Grotesque (body), self-hosted via Fontsource.
+Palette: mint tile, aubergine ink, persimmon, marigold and spearmint (see `src/styles/tokens.css`).

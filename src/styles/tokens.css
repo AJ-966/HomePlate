@@ -1,0 +1,35 @@
+/* Design tokens: the palette, type and shape choices, defined once and reused everywhere.
+   Mood: a 1970s kitchen. Mint tile, aubergine ink, persimmon and marigold, like Pyrex and cookbook covers. */
+
+:root {
+  /* Colour */
+  --tile: #d7f0e4; /* page background, like kitchen tile */
+  --milk: #fffcf4; /* surfaces: cards, header, panels (milk glass) */
+  --ink: #3a1d3f; /* text and borders (aubergine) */
+  --ink-soft: #5a4560; /* secondary text */
+  --line: rgba(58, 29, 63, 0.22); /* quiet borders */
+  --persimmon: #c93a1b; /* primary action; white text on it is 5.1:1 */
+  --persimmon-dark: #a92e14;
+  --marigold: #ffc233; /* price stickers, step numbers */
+  --spearmint: #17806a; /* "good" states; white text on it is 4.8:1 */
+  --spearmint-deep: #12705d; /* spearmint used as text */
+
+  /* One placemat colour per cuisine; ink text on each is 7:1 or better */
+  --cuisine-pakistani: #ffd15c;
+  --cuisine-indian: #ff9e7d;
+  --cuisine-italian: #cdb8f0;
+  --cuisine-middle-eastern: #c2e08f;
+  --cuisine-east-asian: #8fd8d0;
+  --cuisine-mexican: #ffa9cc;
+
+  /* Type */
+  --font-display: "Caprasimo", "Cooper Black", Georgia, serif; /* retro cookbook headings */
+  --font-body: "Bricolage Grotesque Variable", "Segoe UI", system-ui, sans-serif;
+  --step-0: 1.0625rem;
+
+  /* Shape: different roles get different roundness */
+  --radius-card: 1.4rem;
+  --radius-field: 0.75rem;
+
+  --container: 72rem;
+}

@@ -22,7 +22,7 @@ Code locations are planned and will be updated once each feature is built.
 - **Alternative:** keep $, $$, $$$ symbols and add a tooltip explaining each tier.
 - **Reason:** students compare value and stay within a budget; real weights and dollar ranges let them do that without opening every meal.
 - **Tradeoff:** cards carry more text, so layout needs care at 390 px, and cooks must supply accurate weights.
-- **Code location:** TODO (planned: `src/components/MealCard.jsx`, `PortionFacts.jsx`, `FilterBar.jsx`, `filterMeals()` in `src/lib/discovery.js`)
+- **Code location:** `src/components/MealCard.jsx`, `src/components/PortionFacts.jsx`, `src/components/FilterBar.jsx`, `filterMeals()` and `deriveFilters()` in `src/lib/discovery.js`
 - **Evidence:** TODO (screenshot and steps)
 
 ## D3: Visible cancellation control with a countdown

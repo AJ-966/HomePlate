@@ -1,0 +1,758 @@
+/* Components. Single-class selectors keep specificity flat, so later rules win predictably. */
+
+/* ---------- Header, nav, footer ---------- */
+.site-header {
+  background: var(--milk);
+  border-bottom: 2px solid var(--ink);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.8rem;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.logo__mark {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
+.logo__word {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+}
+
+.nav {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.nav__link {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+  padding: 0.25rem 0.1rem;
+}
+
+.nav__link:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--persimmon);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+/* the current page gets the wavy underline (declared after :hover so it wins) */
+.nav__link[aria-current="page"] {
+  text-decoration: underline wavy var(--persimmon);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+.site-footer {
+  margin-top: 3rem;
+  padding: 1.5rem 0 2rem;
+  background: var(--milk);
+  border-top: 2px solid var(--ink);
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+/* ---------- Buttons and links ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.65rem 1.3rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--milk);
+  color: var(--ink);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--marigold);
+}
+
+.btn--primary {
+  background: var(--persimmon);
+  border-color: var(--persimmon);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background: var(--persimmon-dark);
+  border-color: var(--persimmon-dark);
+}
+
+.btn--quiet {
+  border-color: transparent;
+  background: transparent;
+  text-decoration: underline;
+  text-decoration-color: var(--persimmon);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+
+.btn--large {
+  font-size: 1.15rem;
+  padding: 0.85rem 1.8rem;
+}
+
+.link-quiet {
+  font-weight: 700;
+  text-decoration-color: var(--persimmon);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+
+/* ---------- Home: hero ---------- */
+.hero {
+  padding-block: clamp(2rem, 6vw, 4.5rem) clamp(1.5rem, 4vw, 3rem);
+}
+
+.hero__inner {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+}
+
+.hero__title {
+  font-size: clamp(2.6rem, 7vw, 4.9rem);
+  margin-bottom: 1rem;
+}
+
+.hero__lead {
+  font-size: 1.2rem;
+  max-width: 34rem;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.hero__plates {
+  position: relative;
+  width: min(100%, 30rem);
+  aspect-ratio: 1 / 0.95;
+  margin-inline: auto;
+}
+
+.plate {
+  position: absolute;
+  transform: rotate(var(--rot));
+  animation: plate-in 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+
+.plate--1 { width: 62%; top: 0; left: 6%; --rot: -6deg; }
+.plate--2 { width: 54%; top: 34%; right: 0; --rot: 8deg; animation-delay: 0.12s; }
+.plate--3 { width: 48%; bottom: 0; left: 0; --rot: -3deg; animation-delay: 0.24s; }
+
+/* the one orchestrated moment on the site: plates land on the table */
+@keyframes plate-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem) rotate(calc(var(--rot) - 14deg)) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(var(--rot));
+  }
+}
+
+@media (min-width: 52rem) {
+  .hero__inner {
+    grid-template-columns: 1.05fr 0.95fr;
+  }
+}
+
+/* ---------- Home: sections, steps, cuisines ---------- */
+.section {
+  padding-block: 2rem;
+}
+
+.section__title {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  margin-bottom: 1.25rem;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.step {
+  counter-increment: step;
+  padding: 1.1rem;
+  background: var(--milk);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-card);
+}
+
+.step::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  margin-bottom: 0.7rem;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--marigold);
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+}
+
+.step__title {
+  font-size: 1.3rem;
+  margin-bottom: 0.4rem;
+}
+
+.step p {
+  margin: 0;
+}
+
+.cuisine-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cuisine-tile {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-height: 6.5rem;
+  padding: 1.1rem 1rem;
+  background: var(--tile-color);
+  border: 2px solid var(--ink);
+  border-radius: 1.4rem 0.5rem 1.4rem 0.5rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.cuisine-tile:hover .cuisine-tile__name {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+
+.cuisine-tile__name {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1.15;
+}
+
+.cuisine-tile__count {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* ---------- Meal grid and card ---------- */
+.meal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.meal-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--milk);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-card);
+}
+
+.meal-card:hover {
+  border-color: var(--ink);
+}
+
+.meal-card__art {
+  position: relative;
+  padding: 1rem 1rem 0;
+}
+
+.meal-art {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.meal-card__art .meal-art {
+  width: 78%;
+  margin-inline: auto;
+}
+
+.price-sticker {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  display: grid;
+  place-items: center;
+  min-width: 3.6rem;
+  height: 3.6rem;
+  padding-inline: 0.3rem;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--marigold);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  transform: rotate(-9deg);
+}
+
+.meal-card__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.4rem;
+  padding: 1rem 1.1rem 1.25rem;
+}
+
+.meal-card__body p {
+  margin: 0;
+}
+
+.meal-card__name {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+/* the whole card is clickable through its title link */
+.meal-card__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.meal-card__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.meal-card__link:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--persimmon);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+
+.meal-card__link:focus-visible {
+  outline: none;
+}
+
+.meal-card:has(.meal-card__link:focus-visible) {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.meal-card__meta {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.meal-card__allergens {
+  font-size: 0.92rem;
+}
+
+.meal-card--muted .meal-card__art {
+  opacity: 0.5;
+}
+
+.meal-grid--compact {
+  margin-top: 1.25rem;
+}
+
+/* ---------- Tags, badges, stock, notes ---------- */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tag {
+  padding: 0.1rem 0.65rem;
+  border: 1.5px solid var(--spearmint);
+  border-radius: 999px;
+  background: #cbebdd;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.badge {
+  padding: 0.35rem 0.65rem;
+  border-radius: 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.badge--warn {
+  background: #ffe0d6;
+  border: 1.5px solid var(--persimmon);
+}
+
+.stock {
+  margin: 0;
+  color: var(--spearmint-deep);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.stock--low {
+  color: var(--persimmon);
+}
+
+.stock--out {
+  color: var(--ink-soft);
+}
+
+.note {
+  margin: 1rem 0;
+  padding: 0.7rem 0.9rem;
+  background: var(--milk);
+  border: 1.5px solid var(--line);
+  border-radius: 0.75rem;
+}
+
+.note--good {
+  background: #d6f1e5;
+  border-color: var(--spearmint);
+}
+
+.note--warn {
+  background: #ffe0d6;
+  border-color: var(--persimmon);
+}
+
+/* ---------- Browse page ---------- */
+.browse {
+  padding-bottom: 3rem;
+}
+
+.page-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin: 1.75rem 0 1.25rem;
+}
+
+.browse__layout {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.filters__panel {
+  display: none;
+  margin-top: 0.75rem;
+}
+
+.filters__panel.is-open {
+  display: block;
+}
+
+.filter-bar {
+  display: grid;
+  gap: 1.1rem;
+  padding: 1.1rem;
+  background: var(--milk);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-card);
+}
+
+.field {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.field > label,
+.field > legend {
+  display: block;
+  padding: 0;
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+}
+
+.field__help {
+  min-height: 1.4em;
+  margin: 0.5rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.field__help--error {
+  color: var(--persimmon-dark);
+  font-weight: 700;
+}
+
+.price-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.price-row label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.field .check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.8rem 0 0;
+  font-weight: 500;
+}
+
+.check input {
+  width: 1.15rem;
+  height: 1.15rem;
+  accent-color: var(--spearmint);
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--milk);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chip--cuisine[aria-pressed="true"] {
+  background: var(--chip-color);
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+
+.chip--diet[aria-pressed="true"] {
+  background: var(--spearmint);
+  border-color: var(--spearmint);
+  color: #fff;
+}
+
+.chip--removable {
+  background: #fff;
+}
+
+.chip--removable:hover {
+  background: var(--marigold);
+}
+
+.results-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.results-bar__count {
+  margin: 0;
+  font-weight: 700;
+}
+
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 56rem) {
+  .browse__layout {
+    grid-template-columns: 18.5rem minmax(0, 1fr);
+    align-items: start;
+    gap: 1.75rem;
+  }
+
+  .filters {
+    position: sticky;
+    top: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+  }
+
+  .filters__toggle {
+    display: none;
+  }
+
+  .filters__panel {
+    display: block;
+    margin-top: 0;
+  }
+}
+
+/* ---------- Loading, error and empty states ---------- */
+.state {
+  max-width: 38rem;
+  padding: 1.5rem;
+  background: var(--milk);
+  border: 1.5px dashed var(--ink-soft);
+  border-radius: var(--radius-card);
+}
+
+.state--error {
+  border-style: solid;
+  border-color: var(--persimmon);
+}
+
+.state__title {
+  font-size: 1.6rem;
+}
+
+.state__loading {
+  margin: 0 0 1rem;
+  font-weight: 700;
+}
+
+.skeleton {
+  padding: 1rem;
+  background: var(--milk);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-card);
+}
+
+.skeleton__art {
+  width: 78%;
+  aspect-ratio: 1;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: rgba(58, 29, 63, 0.08);
+}
+
+.skeleton__line {
+  height: 1rem;
+  margin-bottom: 0.6rem;
+  border-radius: 0.5rem;
+  background: rgba(58, 29, 63, 0.08);
+}
+
+.skeleton__line--short {
+  width: 60%;
+}
+
+/* ---------- Meal details ---------- */
+.details {
+  padding-block: 1.5rem 2rem;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.25rem;
+  font-weight: 700;
+  text-underline-offset: 4px;
+}
+
+.details__layout {
+  display: grid;
+  gap: 2rem;
+}
+
+.details__art .meal-art {
+  max-width: 26rem;
+  margin-inline: auto;
+}
+
+.details__title {
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  margin-bottom: 0.25rem;
+}
+
+.details__meta {
+  color: var(--ink-soft);
+}
+
+.details__price {
+  margin: 1rem 0 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+}
+
+.details__subtitle {
+  margin-top: 1.5rem;
+  font-size: 1.4rem;
+}
+
+.facts {
+  margin: 0;
+  border-top: 1.5px solid var(--line);
+}
+
+.facts__row {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: 0.75rem;
+  padding: 0.7rem 0;
+  border-bottom: 1.5px solid var(--line);
+}
+
+.facts__row dt {
+  font-weight: 700;
+}
+
+.facts__row dd {
+  margin: 0;
+}
+
+@media (min-width: 52rem) {
+  .details__layout {
+    grid-template-columns: minmax(0, 26rem) 1fr;
+    align-items: start;
+    gap: 3rem;
+  }
+}

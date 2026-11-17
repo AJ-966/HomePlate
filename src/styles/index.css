@@ -1,16 +1,3 @@
-/* Milestone 1: minimal base only. The full design system arrives with the components. */
-*, *::before, *::after { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  line-height: 1.5;
-  color: #1f2933;
-  background: #fffaf3;
-}
-
-.shell {
-  max-width: 40rem;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
+@import "./tokens.css";
+@import "./base.css";
+@import "./components.css";
