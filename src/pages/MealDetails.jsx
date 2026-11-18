@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import MealArt from "../components/MealArt.jsx";
 import DietTags from "../components/DietTags.jsx";
 import PortionFacts from "../components/PortionFacts.jsx";
+import QuantityControl from "../components/QuantityControl.jsx";
 import Stock from "../components/Stock.jsx";
 import MealCard from "../components/MealCard.jsx";
 import { ErrorMessage, EmptyState } from "../components/StatusMessage.jsx";
@@ -102,6 +103,8 @@ export default function MealDetails() {
           {requirements.length > 0 && !suitability.suitable && (
             <p className="note note--warn">Not suitable for your dietary needs: {suitability.reasons.join(", ")}.</p>
           )}
+
+          <QuantityControl meal={meal} className="details__action" />
 
           <h2 className="details__subtitle">What’s in a portion</h2>
           <PortionFacts meal={meal} />

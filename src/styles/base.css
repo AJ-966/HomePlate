@@ -78,6 +78,8 @@ main:focus {
 /* Form controls */
 input[type="search"],
 input[type="text"],
+input[type="tel"],
+textarea,
 select {
   width: 100%;
   font: inherit;
@@ -88,7 +90,9 @@ select {
   background: #fff;
 }
 
-input[aria-invalid="true"] {
+input[aria-invalid="true"],
+textarea[aria-invalid="true"],
+select[aria-invalid="true"] {
   border-color: var(--persimmon);
   background: #fff1ec;
 }

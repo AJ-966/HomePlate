@@ -10,6 +10,7 @@ export const SLOT_LEAD_HOURS = 3; // a slot must start at least this long after 
 export const CANCEL_CUTOFF_HOURS = 2; // free cancellation until this long before the slot
 export const SLOT_FIRST_HOUR = 11; // first delivery slot starts at 11:00
 export const SLOT_LAST_HOUR = 21; // last delivery slot starts at 21:00
+export const SLOT_DAYS = 2; // slots are offered for today and tomorrow
 
 // Pricing (all money is stored in integer cents to avoid floating-point errors)
 export const SERVICE_FEE_CENTS = 100;

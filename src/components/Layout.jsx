@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import Logo from "./Logo.jsx";
+import { useOrder } from "../context/OrderContext.jsx";
 
 // The frame around every page: header, main content (<Outlet />) and footer.
 export default function Layout() {
   const { pathname } = useLocation();
+  const { count } = useOrder();
 
   // A new page should start at the top, and keyboard users should land on the content.
   useEffect(() => {
@@ -26,6 +28,10 @@ export default function Layout() {
             </NavLink>
             <NavLink to="/meals" className="nav__link">
               Meals
+            </NavLink>
+            <NavLink to="/order" className="nav__link" aria-label={count > 0 ? `Your order, ${count} ${count === 1 ? "meal" : "meals"}` : "Your order"}>
+              Your order
+              {count > 0 && <span className="nav__count" aria-hidden="true">{count}</span>}
             </NavLink>
           </nav>
         </div>

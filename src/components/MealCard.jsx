@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import MealArt from "./MealArt.jsx";
 import DietTags from "./DietTags.jsx";
+import QuantityControl from "./QuantityControl.jsx";
 import Stock from "./Stock.jsx";
 import { allergenText } from "./PortionFacts.jsx";
 import { formatCentsShort } from "../lib/format.js";
@@ -32,6 +33,7 @@ export default function MealCard({ meal, suitability }) {
         {!suitability.suitable && (
           <p className="badge badge--warn">Not suitable: {suitability.reasons.join(", ")}</p>
         )}
+        <QuantityControl meal={meal} className="meal-card__action" />
       </div>
     </article>
   );

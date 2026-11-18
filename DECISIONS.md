@@ -11,7 +11,7 @@ Code locations are planned and will be updated once each feature is built.
 - **Alternative:** show fees only at checkout, with a notice on menu pages that fees apply.
 - **Reason:** the task is judging the real cost before committing; seeing fees early removes the surprise and supports a completed order.
 - **Tradeoff:** uses screen space, needs a delivery zone chosen early (default: Inner zone, with a change control), and adds shared state every page must keep consistent.
-- **Code location:** TODO (planned: `src/components/OrderSummary.jsx`, `calculateTotals()` in `src/lib/pricing.js`)
+- **Code location:** `src/components/OrderSummary.jsx`, `calculateTotals()` in `src/lib/pricing.js` (used on `/order` and `/checkout`); the running bar visible from the first item on every page is added in milestone 4
 - **Evidence:** TODO (screenshot and steps)
 
 ## D2: Defined portions and a USD price filter

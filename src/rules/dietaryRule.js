@@ -35,3 +35,14 @@ export function checkMealAgainstDiet(meal, requirements = []) {
 
   return { suitable: reasons.length === 0, reasons };
 }
+
+/**
+ * Checks every meal in an order. Returns only the meals that do NOT fit, each with its reasons,
+ * so the order page can say exactly which meals to remove.
+ * @param lines  [{ meal, quantity }] from buildLines()
+ */
+export function checkOrderAgainstDiet(lines, requirements = []) {
+  return lines
+    .map((line) => ({ meal: line.meal, ...checkMealAgainstDiet(line.meal, requirements) }))
+    .filter((result) => !result.suitable);
+}
