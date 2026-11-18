@@ -2,11 +2,10 @@
 
 Home-cooked meals for university students: browse meals cooked by neighbours, see exactly what a portion is and
 what it costs (fees included), order for a delivery slot, and cancel for free until two hours before it.
-A React frontend for CS4032 Assignment 02. All orders, payments, cooks and deliveries are **simulated**; there is
+A React frontend for CS4032 Assignment 02. All orders, payments, cooks and deliveries are **simulated** - there is
 no backend.
 
-**Student:** TODO (name, roll number, section)
-**GitHub:** TODO | **Deployment:** TODO | **Final commit:** TODO
+**Student:** 24i-2137, CY-A | **GitHub:** TODO | **Deployment:** TODO | **Final commit:** TODO
 
 ## Commands
 
