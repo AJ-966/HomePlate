@@ -104,3 +104,11 @@ test("format: price parsing", () => {
   assert.deepEqual(parseDollarsToCents("9.50"), { status: "ok", cents: 950 });
   assert.equal(parseDollarsToCents("9.505").status, "invalid");
 });
+
+import { formatRemaining } from "../src/lib/time.js";
+test("countdown wording", () => {
+  assert.equal(formatRemaining(90 * 60 * 1000), "1 h 30 min");
+  assert.equal(formatRemaining(610000), "10 min 10 s");
+  assert.equal(formatRemaining(4000), "4 s");
+  assert.equal(formatRemaining(-5000), "0 s");
+});

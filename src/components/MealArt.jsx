@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { MEAL_ART } from "../data/mealArt.js";
 
 export const cuisineSlug = (cuisine) => cuisine.toLowerCase().replace(/\s+/g, "-");
@@ -28,7 +29,26 @@ function Shape({ shape }) {
 }
 
 // A plate on a cuisine-coloured placemat. Use decorative when the meal name is already next to it.
+// If the meal has a photo it is shown instead (stock photos are illustrative, see /credits).
+// The plate drawing is the fallback when there is no photo or the photo fails to load.
 export default function MealArt({ meal, decorative = false }) {
+  const [photoFailed, setPhotoFailed] = useState(false);
+
+  if (meal.photo && !photoFailed) {
+    return (
+      <img
+        className="meal-photo"
+        src={meal.photo}
+        alt={decorative ? "" : `${meal.name} (illustrative photo)`}
+        width="1000"
+        height="750"
+        loading="lazy"
+        decoding="async"
+        onError={() => setPhotoFailed(true)}
+      />
+    );
+  }
+
   const shapes = MEAL_ART[meal.id] ?? [];
   const a11y = decorative ? { "aria-hidden": true } : { role: "img", "aria-label": `Illustration of ${meal.name}` };
 

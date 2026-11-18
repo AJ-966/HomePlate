@@ -1,12 +1,21 @@
 import { useEffect } from "react";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import Logo from "./Logo.jsx";
+import OrderBar from "./OrderBar.jsx";
+import { useMeals } from "../context/MealsContext.jsx";
 import { useOrder } from "../context/OrderContext.jsx";
+import { buildLines, calculateTotals } from "../lib/pricing.js";
+
+// Pages that already show the full cost summary do not need the running bar.
+const NO_BAR = ["/order", "/checkout", "/confirmation"];
 
 // The frame around every page: header, main content (<Outlet />) and footer.
 export default function Layout() {
   const { pathname } = useLocation();
-  const { count } = useOrder();
+  const { count, items, zoneId } = useOrder();
+  const { status, meals } = useMeals();
+  const showBar = count > 0 && status === "ready" && !NO_BAR.includes(pathname);
+  const totals = showBar ? calculateTotals(buildLines(items, meals), zoneId) : null;
 
   // A new page should start at the top, and keyboard users should land on the content.
   useEffect(() => {
@@ -41,13 +50,15 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      <footer className="site-footer">
+      <footer className={showBar ? "site-footer site-footer--with-bar" : "site-footer"}>
         <div className="container">
           <p>
-            HomePlate is a student project. The meals, cooks and orders are made up, and nothing is delivered or charged.
+            HomePlate is a student project. The meals, cooks and orders are made up, and nothing is delivered or charged. <Link to="/credits">Photo credits</Link>
           </p>
         </div>
       </footer>
+
+      {showBar && <OrderBar count={count} totals={totals} zoneId={zoneId} />}
     </>
   );
 }

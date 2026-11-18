@@ -32,9 +32,9 @@ tests/          Node test runner tests for the business rule
 
 ## Status
 
-Milestone 3 (order state, the three business rules, order review, delivery form, confirmation) is
-complete. Layout polish, the running fee bar and cancellation come in milestones 4 and 5. This README will be
-completed before submission.
+Milestone 4 (running cost bar, cancellation with live countdown, small-screen polish) is complete,
+on top of milestones 1 to 3. Milestone 5 adds the demo panel, final checks and hosting config. This README
+will be completed before submission.
 
 ## Routes
 
@@ -63,3 +63,10 @@ Palette: mint tile, aubergine ink, persimmon, marigold and spearmint (see `src/s
 | Cost totals | `src/lib/pricing.js` | `tests/rules.test.js` |
 
 Run the tests with `npm test`.
+
+## Photos
+
+Meal photos are Unsplash stock images, cropped to 4:3 and compressed to about 100 to 170 KB each in
+`public/meals/` (`m01.jpg` to `m12.jpg`). They are illustrative: the cooks and dishes are made up. The plate
+illustration (`src/components/MealArt.jsx`) is the fallback if a photo is missing or fails to load.
+Credits are in `src/data/credits.js` and shown at `/credits`.

@@ -10,6 +10,7 @@ import MealDetails from "./pages/MealDetails.jsx";
 import Order from "./pages/Order.jsx";
 import Checkout from "./pages/Checkout.jsx";
 import Confirmation from "./pages/Confirmation.jsx";
+import Credits from "./pages/Credits.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
 // Shared state wraps the routes, so it survives moving between pages.
@@ -27,6 +28,7 @@ export default function App() {
               <Route path="order" element={<Order />} />
               <Route path="checkout" element={<Checkout />} />
               <Route path="confirmation" element={<Confirmation />} />
+              <Route path="credits" element={<Credits />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>

@@ -1,11 +1,13 @@
 // Local data: 12 fictional home-cooked meals. Every record has a stable id.
 // priceCents is an integer. portionGrams is cooked weight. 1 portion = one adult meal (main plus side).
-// dietTags: "vegetarian" | "vegan" | "halal". contains: allergen keys from ALLERGEN_LABELS.
+// dietTags: "vegetarian" | "vegan" | "halal". Halal is declared per meal and follows the cook's kitchen:
+// Aisha K., Meera P. and Layla H. run halal kitchens, so all of their meals carry the tag. contains: allergen keys from ALLERGEN_LABELS.
 // dailyStock is the starting number of portions available per day.
 
 export const MEALS = [
   {
     id: "m01",
+    photo: "/meals/m01.jpg",
     name: "Chicken Biryani",
     cuisine: "Pakistani",
     cook: "Aisha K.",
@@ -18,30 +20,33 @@ export const MEALS = [
   },
   {
     id: "m02",
+    photo: "/meals/m02.jpg",
     name: "Aloo Gobi with Roti",
     cuisine: "Pakistani",
     cook: "Aisha K.",
     description: "Potato and cauliflower cooked dry with cumin and turmeric, with two fresh rotis.",
     portionGrams: 380,
     priceCents: 900,
-    dietTags: ["vegetarian", "vegan"],
+    dietTags: ["vegetarian", "vegan", "halal"],
     contains: ["gluten"],
     dailyStock: 8,
   },
   {
     id: "m03",
+    photo: "/meals/m03.jpg",
     name: "Chana Masala with Rice",
     cuisine: "Indian",
     cook: "Meera P.",
     description: "Chickpeas simmered in a tomato and onion masala, served over steamed rice.",
     portionGrams: 400,
     priceCents: 900,
-    dietTags: ["vegetarian", "vegan"],
+    dietTags: ["vegetarian", "vegan", "halal"],
     contains: [],
     dailyStock: 10,
   },
   {
     id: "m04",
+    photo: "/meals/m04.jpg",
     name: "Butter Chicken with Rice",
     cuisine: "Indian",
     cook: "Meera P.",
@@ -54,6 +59,7 @@ export const MEALS = [
   },
   {
     id: "m05",
+    photo: "/meals/m05.jpg",
     name: "Baked Penne Marinara",
     cuisine: "Italian",
     cook: "Rosa D.",
@@ -66,6 +72,7 @@ export const MEALS = [
   },
   {
     id: "m06",
+    photo: "/meals/m06.jpg",
     name: "Beef Lasagna",
     cuisine: "Italian",
     cook: "Rosa D.",
@@ -78,6 +85,7 @@ export const MEALS = [
   },
   {
     id: "m07",
+    photo: "/meals/m07.jpg",
     name: "Chicken Shawarma Plate",
     cuisine: "Middle Eastern",
     cook: "Layla H.",
@@ -90,18 +98,20 @@ export const MEALS = [
   },
   {
     id: "m08",
+    photo: "/meals/m08.jpg",
     name: "Falafel and Hummus Plate",
     cuisine: "Middle Eastern",
     cook: "Layla H.",
     description: "Crisp chickpea falafel with hummus, tabbouleh and pickled turnip.",
     portionGrams: 380,
     priceCents: 900,
-    dietTags: ["vegetarian", "vegan"],
+    dietTags: ["vegetarian", "vegan", "halal"],
     contains: ["sesame"],
     dailyStock: 8,
   },
   {
     id: "m09",
+    photo: "/meals/m09.jpg",
     name: "Vegetable Fried Rice",
     cuisine: "East Asian",
     cook: "Wei L.",
@@ -114,6 +124,7 @@ export const MEALS = [
   },
   {
     id: "m10",
+    photo: "/meals/m10.jpg",
     name: "Pad Thai",
     cuisine: "East Asian",
     cook: "Wei L.",
@@ -126,6 +137,7 @@ export const MEALS = [
   },
   {
     id: "m11",
+    photo: "/meals/m11.jpg",
     name: "Chicken Burrito Bowl",
     cuisine: "Mexican",
     cook: "Camila R.",
@@ -138,6 +150,7 @@ export const MEALS = [
   },
   {
     id: "m12",
+    photo: "/meals/m12.jpg",
     name: "Black Bean Enchiladas",
     cuisine: "Mexican",
     cook: "Camila R.",

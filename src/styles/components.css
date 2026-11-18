@@ -1008,3 +1008,155 @@ button.link-quiet {
 .order {
   padding-block: 1.5rem 3rem;
 }
+
+/* ---------- Running cost bar (D1) ---------- */
+.order-bar {
+  position: fixed;
+  z-index: 20;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
+  background: var(--milk);
+  border-top: 2px solid var(--ink);
+  border-radius: 1.2rem 1.2rem 0 0;
+  box-shadow: 0 -6px 0 rgba(58, 29, 63, 0.08);
+}
+.order-bar__head {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem 0.8rem;
+}
+.order-bar .btn {
+  padding: 0.5rem 1rem;
+  white-space: nowrap;
+}
+.order-bar .link-quiet {
+  white-space: nowrap;
+}
+.order-bar__total {
+  display: grid;
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.85rem;
+  line-height: 1.25;
+  color: var(--ink-soft);
+}
+.order-bar__total strong {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--ink);
+}
+.order-bar__rows {
+  margin: 0 0 0.6rem;
+}
+.order-bar__rows > div {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.3rem 0;
+  border-bottom: 1.5px solid var(--line);
+}
+.order-bar__rows dt,
+.order-bar__rows dd {
+  margin: 0;
+}
+.site-footer--with-bar {
+  padding-bottom: 6rem;
+}
+@media (min-width: 56rem) {
+  .order-bar {
+    left: auto;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    width: 24rem;
+    padding-bottom: 0.9rem;
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-card);
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+}
+
+/* ---------- Cancellation (D3) ---------- */
+.cancel {
+  margin: 1.2rem 0;
+  padding: 1rem 1.2rem;
+  background: var(--milk);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-card);
+}
+.cancel__title {
+  margin: 0 0 0.3rem;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+.cancel__time {
+  margin: 0 0 0.8rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--spearmint-deep);
+}
+.cancel__time--closed {
+  color: var(--ink-soft);
+}
+.cancel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.cancel--done {
+  border-color: var(--persimmon);
+}
+
+/* ---------- Small-screen polish ---------- */
+.nav__link {
+  white-space: nowrap;
+}
+.confirmation .facts + .btn {
+  margin-top: 1.2rem;
+}
+@media (max-width: 34rem) {
+  .site-header__inner {
+    gap: 0.5rem;
+  }
+  .logo__word {
+    font-size: 1.15rem;
+  }
+  .nav {
+    gap: 0.7rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* ---------- Meal photos ---------- */
+.meal-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--tile);
+  border: 2px solid var(--ink);
+  border-radius: 1rem 0.4rem 1rem 0.4rem;
+}
+.details__art .meal-photo {
+  max-width: 34rem;
+  border-radius: 1.4rem 0.5rem 1.4rem 0.5rem;
+}
+.order-line__art .meal-photo {
+  aspect-ratio: 1;
+  border-width: 1.5px;
+  border-radius: 0.7rem;
+}
+.meal-card--muted .meal-photo {
+  filter: grayscale(0.7);
+}
+.credits a {
+  color: inherit;
+}
+.site-footer a {
+  color: inherit;
+  font-weight: 700;
+}

@@ -30,3 +30,14 @@ export function timeLabel(iso, now) {
   const date = new Date(iso);
   return `${dayLabel(date, now)} at ${timeFormat.format(date)}`;
 }
+
+/** Time left as words: 5400000 -> "1 h 30 min", 610000 -> "10 min 10 s", 4000 -> "4 s". */
+export function formatRemaining(ms) {
+  const total = Math.max(0, Math.floor(ms / 1000));
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = total % 60;
+  if (h > 0) return `${h} h ${m} min`;
+  if (m > 0) return `${m} min ${s} s`;
+  return `${s} s`;
+}

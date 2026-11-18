@@ -81,6 +81,7 @@ export default function MealDetails() {
       <div className="details__layout">
         <div className="details__art">
           <MealArt meal={meal} />
+          {meal.photo && <p className="field__help">Illustrative photo. A real portion is {meal.portionGrams} g cooked.</p>}
         </div>
 
         <div className="details__info">

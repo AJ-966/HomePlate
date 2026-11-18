@@ -83,6 +83,9 @@ export function OrderProvider({ children }) {
         setLastOrder(placed);
         setOrder((prev) => ({ ...prev, items: [] }));
       },
+      // Simulated cancellation: the order stays on screen, marked cancelled (Decision D3).
+      cancelOrder: () =>
+        setLastOrder((prev) => (prev && prev.status === "placed" ? { ...prev, status: "cancelled", cancelledAt: new Date().toISOString() } : prev)),
       clearLastOrder: () => setLastOrder(null),
     };
   }, [order, lastOrder, notices]);
