@@ -39,7 +39,7 @@ export default function OrderBar({ count, totals, zoneId }) {
           {open ? "Hide fees" : "See fees"}
         </button>
         <Link to="/order" className="btn btn--primary">
-          View order
+          View basket
         </Link>
       </div>
     </aside>

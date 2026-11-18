@@ -54,6 +54,7 @@ export default function MealDetails() {
     return (
       <div className="container details">
         {backLink}
+        <h1 className="page-title">Meal not found</h1>
         <EmptyState title="That meal isn’t on the menu">
           <p>
             There’s no meal with the code “{id}”. It may have been removed, or the link may have a typo. Browse the full

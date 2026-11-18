@@ -1160,3 +1160,122 @@ button.link-quiet {
   color: inherit;
   font-weight: 700;
 }
+
+/* ---------- Orders list, status badges, demo panel ---------- */
+.badge--active {
+  background: #d9f2ea;
+  border: 1.5px solid var(--spearmint-deep);
+  color: var(--spearmint-deep);
+}
+.badge--cancelled {
+  background: #ffe3da;
+  border: 1.5px solid var(--persimmon-dark);
+  color: var(--persimmon-dark);
+}
+.badge--completed {
+  background: #ece7ef;
+  border: 1.5px solid var(--ink-soft);
+  color: var(--ink-soft);
+}
+.order-cards {
+  display: grid;
+  gap: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+.order-card {
+  padding: 1rem 1.2rem;
+  background: var(--milk);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-card);
+}
+.order-card__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.order-card__id {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+.order-card__id a {
+  color: inherit;
+}
+.order-card__items,
+.order-card__meta {
+  margin: 0.3rem 0 0;
+}
+.order-card__meta {
+  color: var(--ink-soft);
+}
+.order-card__cancel {
+  margin: 0.5rem 0 0;
+  font-weight: 700;
+  color: var(--spearmint-deep);
+}
+.order-card__cancel--closed {
+  color: var(--ink-soft);
+}
+.check small {
+  display: block;
+}
+.demo {
+  margin-top: 1rem;
+  padding: 0.6rem 0.9rem;
+  border: 1.5px dashed var(--line);
+  border-radius: 0.75rem;
+  font-size: 0.95rem;
+}
+.demo summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.demo__body {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 0.8rem;
+}
+.demo__group {
+  margin: 0;
+  padding: 0.6rem 0.8rem 0.8rem;
+  border: 1.5px solid var(--line);
+  border-radius: 0.75rem;
+}
+.demo__group legend {
+  padding: 0 0.3rem;
+  font-weight: 700;
+}
+.demo__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.6rem;
+}
+.demo__row label {
+  display: grid;
+  gap: 0.2rem;
+}
+.demo__label {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.demo input[type="number"] {
+  width: 5.5rem;
+  font: inherit;
+  padding: 0.5rem 0.6rem;
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius-field);
+  background: #fff;
+  color: var(--ink);
+}
+.demo .btn {
+  padding: 0.4rem 0.9rem;
+}
+@media (max-width: 34rem) {
+  .nav__link--home {
+    display: none; /* the logo already links home; this keeps four links on one line */
+  }
+}

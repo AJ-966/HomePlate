@@ -47,7 +47,7 @@ export function reconcileItems(items, meals) {
     }
     const { quantity, max } = checkQuantity(item.quantity, meal);
     if (max === 0) {
-      notices.push(`${meal.name} sold out, so we removed it from your order.`);
+      notices.push(`${meal.name} sold out, so we removed it from your basket.`);
     } else if (quantity < item.quantity) {
       notices.push(`Only ${max} of ${meal.name} ${max === 1 ? "is" : "are"} available, so we lowered your quantity.`);
       kept.push({ mealId: item.mealId, quantity });

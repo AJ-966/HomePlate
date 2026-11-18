@@ -24,8 +24,8 @@ export function loadMeals({ signal } = {}) {
       resolve(
         MEALS.map((meal) => {
           const override = stockOverrides[meal.id];
-          const remaining = Number.isInteger(override) ? override : meal.dailyStock;
-          return { ...meal, remainingStock: Math.max(0, remaining) };
+          const fixed = Number.isInteger(override); // set from the demo panel: shown as it is
+          return { ...meal, remainingStock: Math.max(0, fixed ? override : meal.dailyStock), stockFixed: fixed };
         })
       );
     }, LOAD_DELAY_MS);

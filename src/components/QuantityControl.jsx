@@ -1,7 +1,7 @@
 import { useOrder } from "../context/OrderContext.jsx";
 import { checkQuantity } from "../rules/quantityRule.js";
 
-// "Add to order" for a meal that is not in the order, or a - 1 + stepper when it is.
+// "Add to basket" for a meal that is not in the order, or a - 1 + stepper when it is.
 // The limits come from checkQuantity() (Rule 1); this component only shows the result.
 export default function QuantityControl({ meal, className = "" }) {
   const { quantityOf, setQuantity } = useOrder();
@@ -22,9 +22,9 @@ export default function QuantityControl({ meal, className = "" }) {
         type="button"
         className={`btn btn--primary qty-add ${className}`}
         onClick={() => setQuantity(meal, 1)}
-        aria-label={`Add ${meal.name} to order`}
+        aria-label={`Add ${meal.name} to basket`}
       >
-        Add to order
+        Add to basket
       </button>
     );
   }
@@ -35,7 +35,7 @@ export default function QuantityControl({ meal, className = "" }) {
         <button type="button" className="qty__btn" onClick={() => setQuantity(meal, quantity - 1)} aria-label={`Remove one ${meal.name}`}>
           −
         </button>
-        <span className="qty__value" role="status" aria-label={`${quantity} in your order`}>
+        <span className="qty__value" role="status" aria-label={`${quantity} in your basket`}>
           {quantity}
         </span>
         <button

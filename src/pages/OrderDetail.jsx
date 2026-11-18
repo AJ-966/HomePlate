@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { EmptyState } from "../components/StatusMessage.jsx";
 import { ZONES } from "../data/config.js";
 import { useOrder } from "../context/OrderContext.jsx";
@@ -10,8 +10,9 @@ import { formatCents } from "../lib/format.js";
 import { formatRemaining, slotLabel, timeLabel } from "../lib/time.js";
 import { CANCEL_CUTOFF_HOURS } from "../data/config.js";
 import { canCancel } from "../rules/slotRule.js";
+import { nowDate } from "../lib/clock.js";
+import { orderStatus, STATUS_LABEL } from "../lib/orders.js";
 
-// Shows the order that was just placed. It is read from saved state, so a reload keeps it.
 // The cancel control with a live countdown to the deadline (Decision D3).
 // Rule 3 decides: free cancellation until CANCEL_CUTOFF_HOURS before the slot starts.
 function CancelPanel({ order, onCancel, now }) {
@@ -32,12 +33,12 @@ function CancelPanel({ order, onCancel, now }) {
 
   function confirmCancel() {
     // Check again with a fresh clock: the deadline may have passed while the question was open.
-    if (!canCancel(order.slotStart, new Date())) {
+    if (!canCancel(order.slotStart, nowDate())) {
       setTooLate(true);
       setConfirming(false);
       return;
     }
-    onCancel();
+    onCancel(order.id);
   }
 
   return (
@@ -79,40 +80,59 @@ function CancelPanel({ order, onCancel, now }) {
   );
 }
 
-export default function Confirmation() {
-  const { lastOrder, cancelOrder } = useOrder();
+// One order: right after placing it (state.justPlaced) this is the confirmation, later it is the order's page.
+export default function OrderDetail() {
+  const { id } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { orders, cancelOrder } = useOrder();
+  // The "Thanks" message belongs to the moment right after placing. Remember it, then clear the
+  // navigation state so a reload (or coming back later) shows the plain order page.
+  const [arrivedFromCheckout] = useState(location.state?.justPlaced === true);
+  useEffect(() => {
+    if (location.state?.justPlaced) navigate(location.pathname, { replace: true, state: null });
+  }, [location, navigate]);
   const now = useNow();
-  useDocumentTitle(!lastOrder ? "No recent order" : lastOrder.status === "cancelled" ? "Order cancelled" : "Order placed");
+  const order = orders.find((o) => o.id === id);
+  useDocumentTitle(!order ? "Order not found" : order.status === "cancelled" ? "Order cancelled" : `Order ${order.id}`);
 
-  if (!lastOrder) {
+  if (!order) {
     return (
       <div className="container order">
-        <h1 className="page-title">No recent order</h1>
+        <h1 className="page-title">Order not found</h1>
         <EmptyState
-          title="You haven’t placed an order yet"
+          title={`There’s no order “${id}” on this device`}
           action={
-            <Link to="/meals" className="btn btn--primary">
-              Browse meals
+            <Link to="/orders" className="btn btn--primary">
+              See your orders
             </Link>
           }
         >
-          <p>Once you place an order, its details and cancellation deadline appear here.</p>
+          <p>Orders are saved in this browser only. The code may have a typo, or the order was placed on another device.</p>
         </EmptyState>
       </div>
     );
   }
 
-  const { delivery, totals, lines } = lastOrder;
-  const zone = ZONES.find((z) => z.id === lastOrder.zoneId) ?? ZONES[0];
+  const { delivery, totals, lines } = order;
+  const zone = ZONES.find((z) => z.id === order.zoneId) ?? ZONES[0];
+  const status = orderStatus(order, now);
+  const justPlaced = arrivedFromCheckout && status === "active";
 
   return (
     <div className="container order confirmation">
-      <h1 className="page-title">{lastOrder.status === "cancelled" ? "Order cancelled" : "Order placed"}</h1>
+      <Link to="/orders" className="back-link">
+        All orders
+      </Link>
+      <h1 className="page-title">{justPlaced ? "Order placed" : `Order ${order.id}`}</h1>
       <p className="confirmation__lead" role="status">
-        Thanks, {delivery.name}. Your order <strong>{lastOrder.id}</strong> {lastOrder.status === "cancelled" ? "was booked for" : "is booked for"} {slotLabel(lastOrder.slotStart, now)}.
+        {justPlaced ? `Thanks, ${delivery.name}. ` : ""}
+        <span className={`badge badge--${status}`}>{STATUS_LABEL[status]}</span> Slot: {slotLabel(order.slotStart, now)}.
+        {justPlaced && <> Your order number is <strong>{order.id}</strong>.</>}
       </p>
 
-      <CancelPanel order={lastOrder} onCancel={cancelOrder} now={now} />
+      {status !== "completed" && <CancelPanel order={order} onCancel={cancelOrder} now={now} />}
+      {status === "completed" && <p className="note">This order’s delivery slot has ended. (Deliveries are simulated in this project.)</p>}
 
       <div className="order__layout">
         <section aria-labelledby="conf-items">
@@ -146,7 +166,7 @@ export default function Confirmation() {
             <div className="facts__row"><dt>Name</dt><dd>{delivery.name}</dd></div>
             <div className="facts__row"><dt>Phone</dt><dd>{delivery.phone}</dd></div>
             <div className="facts__row"><dt>Address</dt><dd>{delivery.address}</dd></div>
-            <div className="facts__row"><dt>Slot</dt><dd>{slotLabel(lastOrder.slotStart, now)}</dd></div>
+            <div className="facts__row"><dt>Slot</dt><dd>{slotLabel(order.slotStart, now)}</dd></div>
             {delivery.notes && <div className="facts__row"><dt>Notes</dt><dd>{delivery.notes}</dd></div>}
           </dl>
           <Link to="/meals" className="btn btn--primary">

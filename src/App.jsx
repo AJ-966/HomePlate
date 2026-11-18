@@ -9,7 +9,8 @@ import Browse from "./pages/Browse.jsx";
 import MealDetails from "./pages/MealDetails.jsx";
 import Order from "./pages/Order.jsx";
 import Checkout from "./pages/Checkout.jsx";
-import Confirmation from "./pages/Confirmation.jsx";
+import Orders from "./pages/Orders.jsx";
+import OrderDetail from "./pages/OrderDetail.jsx";
 import Credits from "./pages/Credits.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
@@ -27,7 +28,8 @@ export default function App() {
               <Route path="meals/:id" element={<MealDetails />} />
               <Route path="order" element={<Order />} />
               <Route path="checkout" element={<Checkout />} />
-              <Route path="confirmation" element={<Confirmation />} />
+              <Route path="orders" element={<Orders />} />
+              <Route path="orders/:id" element={<OrderDetail />} />
               <Route path="credits" element={<Credits />} />
               <Route path="*" element={<NotFound />} />
             </Route>

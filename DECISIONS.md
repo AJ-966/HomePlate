@@ -1,7 +1,7 @@
 # Frontend decisions
 
 Each entry addresses one problem found on foodpanda.pk (see the report, Section 4).
-Code locations are planned and will be updated once each feature is built.
+Each entry lists where it is implemented. The evidence lines are for the report: screenshots and steps.
 
 ## D1: Running cost summary from the first item
 
@@ -33,5 +33,5 @@ Code locations are planned and will be updated once each feature is built.
 - **Alternative:** a "Need help?" link that opens a contact form after ordering.
 - **Reason:** the task is undoing a mistake quickly; a direct control with a visible deadline avoids a search through help menus.
 - **Tradeoff:** needs a timer with cleanup and time-dependent state that is harder to test, so a demo clock control is provided. Cancellation is simulated only.
-- **Code location:** `CancelPanel` in `src/pages/Confirmation.jsx`, `useCountdown()` in `src/hooks/useCountdown.js`, `cancelDeadline()` and `canCancel()` in `src/rules/slotRule.js`, `cancelOrder()` in `src/context/OrderContext.jsx`; the rule is also stated at slot selection in `src/pages/Checkout.jsx`
+- **Code location:** `CancelPanel` in `src/pages/OrderDetail.jsx` and `CancelLine` in `src/pages/Orders.jsx`, `useCountdown()` in `src/hooks/useCountdown.js`, `cancelDeadline()` and `canCancel()` in `src/rules/slotRule.js`, `cancelOrder()` in `src/context/OrderContext.jsx`; the rule is also stated at slot selection in `src/pages/Checkout.jsx`
 - **Evidence:** TODO (screenshot and steps)

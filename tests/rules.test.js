@@ -5,6 +5,7 @@ import { calculateTotals, buildLines } from "../src/lib/pricing.js";
 import { cancelDeadline, canCancel, getAvailableSlots, validateSlot } from "../src/rules/slotRule.js";
 import { checkMealAgainstDiet, checkOrderAgainstDiet } from "../src/rules/dietaryRule.js";
 import { validateDelivery } from "../src/lib/validation.js";
+import { applyReserved, reservedByMeal } from "../src/rules/stockRule.js";
 import { parseDollarsToCents } from "../src/lib/format.js";
 
 const meal = (over = {}) => ({ id: "x", name: "Test", priceCents: 1000, dietTags: [], contains: [], remainingStock: 10, ...over });
@@ -111,4 +112,39 @@ test("countdown wording", () => {
   assert.equal(formatRemaining(610000), "10 min 10 s");
   assert.equal(formatRemaining(4000), "4 s");
   assert.equal(formatRemaining(-5000), "0 s");
+});
+
+import { itemsSummary, orderStatus } from "../src/lib/orders.js";
+const placed = (over = {}) => ({ id: "HP-1", status: "placed", slotStart: new Date(2026, 10, 18, 14, 0).toISOString(), lines: [{ quantity: 2, name: "Chicken Biryani" }, { quantity: 1, name: "Pad Thai" }], ...over });
+
+test("order status: booked until the slot ends, then completed", () => {
+  assert.equal(orderStatus(placed(), new Date(2026, 10, 18, 9, 0)), "active");
+  assert.equal(orderStatus(placed(), new Date(2026, 10, 18, 14, 59)), "active");
+  assert.equal(orderStatus(placed(), new Date(2026, 10, 18, 15, 0)), "completed");
+});
+
+test("order status: cancelled always wins", () => {
+  assert.equal(orderStatus(placed({ status: "cancelled" }), new Date(2026, 10, 18, 9, 0)), "cancelled");
+  assert.equal(orderStatus(placed({ status: "cancelled" }), new Date(2026, 10, 19, 9, 0)), "cancelled");
+});
+
+test("order summary wording", () => {
+  assert.equal(itemsSummary(placed()), "2 × Chicken Biryani, 1 × Pad Thai");
+});
+
+test("stock: booked orders placed today take portions off, cancelled ones give them back", () => {
+  const now = new Date("2026-11-18T12:00:00");
+  const order = (status, qty, placedAt = "2026-11-18T09:00:00") => ({ status, placedAt, lines: [{ mealId: "x", quantity: qty }] });
+  const meals = [meal({ remainingStock: 6 })];
+  assert.equal(applyReserved(meals, [order("placed", 2), order("placed", 1)], now)[0].remainingStock, 3);
+  assert.equal(applyReserved(meals, [order("cancelled", 2)], now)[0].remainingStock, 6);
+  assert.equal(applyReserved(meals, [order("placed", 2, "2026-11-17T09:00:00")], now)[0].remainingStock, 6); // yesterday
+  assert.equal(applyReserved(meals, [order("placed", 9)], now)[0].remainingStock, 0); // never below zero
+  assert.deepEqual(reservedByMeal([], now), {});
+});
+
+test("stock: a stock value set from the demo panel is not reduced again", () => {
+  const now = new Date("2026-11-18T12:00:00");
+  const orders = [{ status: "placed", placedAt: "2026-11-18T09:00:00", lines: [{ mealId: "x", quantity: 2 }] }];
+  assert.equal(applyReserved([meal({ remainingStock: 5, stockFixed: true })], orders, now)[0].remainingStock, 5);
 });

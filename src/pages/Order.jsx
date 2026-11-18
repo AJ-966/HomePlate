@@ -13,7 +13,7 @@ import { checkOrderAgainstDiet } from "../rules/dietaryRule.js";
 
 // Review step: change quantities, see every cost, then continue to delivery details.
 export default function Order() {
-  useDocumentTitle("Your order");
+  useDocumentTitle("Your basket");
   const { status, meals, error, retry } = useMeals();
   const order = useOrder();
   const { requirements } = usePreferences();
@@ -21,9 +21,9 @@ export default function Order() {
   if (status === "loading") {
     return (
       <div className="container order">
-        <h1 className="page-title">Your order</h1>
+        <h1 className="page-title">Your basket</h1>
         <p role="status" className="state__loading">
-          Loading your order…
+          Loading your basket…
         </p>
       </div>
     );
@@ -31,7 +31,7 @@ export default function Order() {
   if (status === "error") {
     return (
       <div className="container order">
-        <h1 className="page-title">Your order</h1>
+        <h1 className="page-title">Your basket</h1>
         <ErrorMessage message={error} onRetry={retry} />
       </div>
     );
@@ -43,7 +43,7 @@ export default function Order() {
 
   return (
     <div className="container order">
-      <h1 className="page-title">Your order</h1>
+      <h1 className="page-title">Your basket</h1>
 
       {order.notices.length > 0 && (
         <div className="note note--warn" role="status">
@@ -60,7 +60,7 @@ export default function Order() {
 
       {lines.length === 0 ? (
         <EmptyState
-          title="Your order is empty"
+          title="Your basket is empty"
           action={
             <Link to="/meals" className="btn btn--primary">
               Browse meals
@@ -101,7 +101,7 @@ export default function Order() {
                     </div>
                     <div className="order-line__side">
                       <p className="order-line__total">{formatCents(lineCents)}</p>
-                      <button type="button" className="link-quiet" onClick={() => order.removeMeal(meal.id)} aria-label={`Remove ${meal.name} from order`}>
+                      <button type="button" className="link-quiet" onClick={() => order.removeMeal(meal.id)} aria-label={`Remove ${meal.name} from basket`}>
                         Remove
                       </button>
                     </div>

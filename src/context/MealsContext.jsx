@@ -3,12 +3,20 @@
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { loadMeals } from "../data/mockApi.js";
+import { nowDate } from "../lib/clock.js";
+import { readJson } from "../lib/storage.js";
+import { applyReserved } from "../rules/stockRule.js";
 
 const MealsContext = createContext(null);
 
 export function MealsProvider({ children }) {
   const [state, setState] = useState({ status: "loading", meals: [], error: "" });
   const [attempt, setAttempt] = useState(0);
+  // Placed orders are reported by OrderProvider; their portions are taken off today's stock (stockRule).
+  const [orders, setOrders] = useState(() => {
+    const saved = readJson("homeplate.orders", []);
+    return Array.isArray(saved) ? saved.filter((o) => o && Array.isArray(o.lines)) : [];
+  });
 
   useEffect(() => {
     const controller = new AbortController();
@@ -24,7 +32,15 @@ export function MealsProvider({ children }) {
     return () => controller.abort();
   }, [attempt]);
 
-  const value = useMemo(() => ({ ...state, retry: () => setAttempt((n) => n + 1) }), [state]);
+  const value = useMemo(
+    () => ({
+      ...state,
+      meals: applyReserved(state.meals, orders, nowDate()),
+      retry: () => setAttempt((n) => n + 1),
+      reportOrders: setOrders,
+    }),
+    [state, orders]
+  );
 
   return <MealsContext.Provider value={value}>{children}</MealsContext.Provider>;
 }

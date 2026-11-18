@@ -6,6 +6,7 @@ export default function NotFound() {
   useDocumentTitle("Page not found");
   return (
     <div className="container details">
+      <h1 className="page-title">Page not found</h1>
       <EmptyState
         title="That page isn’t on the menu"
         action={

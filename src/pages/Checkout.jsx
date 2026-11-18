@@ -8,6 +8,7 @@ import { useOrder } from "../context/OrderContext.jsx";
 import { usePreferences } from "../context/PreferencesContext.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useNow } from "../hooks/useNow.js";
+import { nowDate } from "../lib/clock.js";
 import { buildLines, calculateTotals } from "../lib/pricing.js";
 import { readJson, writeJson } from "../lib/storage.js";
 import { dayLabel, slotRange, timeLabel } from "../lib/time.js";
@@ -23,11 +24,14 @@ const EMPTY = { name: "", phone: "", address: "", notes: "" };
 function loadDraft() {
   const saved = readJson(DRAFT_KEY, {});
   const text = (v) => (typeof v === "string" ? v : "");
-  return { name: text(saved.name), phone: text(saved.phone), address: text(saved.address), notes: text(saved.notes) };
+  return {
+    remember: saved.remember !== false, // on by default; switched off, nothing is kept
+    values: { name: text(saved.name), phone: text(saved.phone), address: text(saved.address), notes: text(saved.notes) },
+  };
 }
 
 function makeOrderId() {
-  return "HP-" + Date.now().toString(36).slice(-5).toUpperCase();
+  return "HP-" + Math.random().toString(36).slice(2, 7).toUpperCase();
 }
 
 export default function Checkout() {
@@ -38,7 +42,9 @@ export default function Checkout() {
   const { requirements } = usePreferences();
   const now = useNow();
 
-  const [values, setValues] = useState(() => ({ ...EMPTY, ...loadDraft() }));
+  const [draft] = useState(loadDraft); // read saved details once, when the page opens
+  const [values, setValues] = useState(() => ({ ...EMPTY, ...draft.values }));
+  const [remember, setRemember] = useState(draft.remember);
   const [slot, setSlot] = useState("");
   const [touched, setTouched] = useState({});
   const [attempted, setAttempted] = useState(0); // counts submit attempts, to move focus to the error summary
@@ -46,9 +52,10 @@ export default function Checkout() {
   const summaryRef = useRef(null);
   const justPlaced = useRef(false); // stops the "empty order" screen flashing while we navigate away
 
+  // "Remember my details" on: keep the text fields on this device. Off: delete them now and keep nothing.
   useEffect(() => {
-    writeJson(DRAFT_KEY, values);
-  }, [values]);
+    writeJson(DRAFT_KEY, remember ? { remember: true, ...values } : { remember: false });
+  }, [values, remember]);
 
   const lines = buildLines(order.items, meals);
   const totals = calculateTotals(lines, order.zoneId);
@@ -72,7 +79,7 @@ export default function Checkout() {
       <div className="container order">
         <h1 className="page-title">Delivery details</h1>
         <p role="status" className="state__loading">
-          Loading your order…
+          Loading your basket…
         </p>
       </div>
     );
@@ -114,7 +121,7 @@ export default function Checkout() {
     if (blocked || errorEntries.length > 0) return;
 
     // Check the slot again with a fresh clock: the student may have left the page open for a while.
-    const fresh = new Date();
+    const fresh = nowDate();
     if (!validateSlot(slot, fresh).valid) {
       setSlot("");
       setSlotNote("The slot you chose is no longer available. Please choose another.");
@@ -122,8 +129,9 @@ export default function Checkout() {
     }
 
     justPlaced.current = true;
+    const placedId = makeOrderId();
     order.placeOrder({
-      id: makeOrderId(),
+      id: placedId,
       status: "placed",
       placedAt: fresh.toISOString(),
       slotStart: slot,
@@ -133,7 +141,7 @@ export default function Checkout() {
       totals,
       delivery: { name: values.name.trim(), phone: values.phone.trim(), address: values.address.trim(), notes: values.notes.trim() },
     });
-    navigate("/confirmation");
+    navigate(`/orders/${placedId}`, { state: { justPlaced: true } });
   }
 
   const zone = ZONES.find((z) => z.id === order.zoneId) ?? ZONES[0];
@@ -149,7 +157,7 @@ export default function Checkout() {
   return (
     <div className="container order">
       <Link to="/order" className="back-link">
-        Back to your order
+        Back to your basket
       </Link>
       <h1 className="page-title">Delivery details</h1>
 
@@ -175,12 +183,12 @@ export default function Checkout() {
               {unsuitable.length > 0 && (
                 <p>
                   <strong>Not suitable for your dietary needs:</strong> {unsuitable.map((u) => `${u.meal.name} (${u.reasons.join(", ")})`).join("; ")}.{" "}
-                  <Link to="/order">Edit your order</Link>
+                  <Link to="/order">Edit your basket</Link>
                 </p>
               )}
               {overStock.length > 0 && (
                 <p>
-                  <strong>Not enough left:</strong> {overStock.map((l) => l.meal.name).join(", ")}. <Link to="/order">Edit your order</Link>
+                  <strong>Not enough left:</strong> {overStock.map((l) => l.meal.name).join(", ")}. <Link to="/order">Edit your basket</Link>
                 </p>
               )}
             </div>
@@ -242,6 +250,14 @@ export default function Checkout() {
                 : ` You can cancel for free until ${CANCEL_CUTOFF_HOURS} hours before your slot.`}
             </p>
           </div>
+
+          <label className="check">
+            <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} />
+            <span>
+              Remember my name, phone and address on this device
+              <small className="field__help">Saved in this browser only. Untick it to delete the saved details.</small>
+            </span>
+          </label>
 
           <button type="submit" className="btn btn--primary btn--large" disabled={blocked}>
             Place order, {totals.totalCents > 0 ? new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(totals.totalCents / 100) : "$0.00"}
